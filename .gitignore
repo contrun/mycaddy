@@ -13,3 +13,4 @@ prefs.*.json
 tmp/
 temp.nix
 .direnv/
+/caddy
