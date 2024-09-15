@@ -8,7 +8,7 @@
 
   outputs = { self, nixpkgs, flake-utils, gomod2nix, ... }@inputs:
     with flake-utils.lib;
-    eachSystem defaultSystems (system: {
+    eachSystem defaultSystems (system: rec {
       config = {
         android_sdk.accept_license = true;
         allowUnfree = true;
@@ -33,9 +33,9 @@
         caddy = pkgsToBuildLocalPackages.buildGoApplication {
           pname = "caddy";
           version = "latest";
-          goPackagePath = "github.com/contrun/infra/caddy";
-          src = ./caddy;
-          modules = ./caddy/gomod2nix.toml;
+          goPackagePath = "github.com/contrun/mycaddy";
+          src = ./.;
+          modules = ./gomod2nix.toml;
           nativeBuildInputs = [ pkgs.musl ];
 
           CGO_ENABLED = 0;
