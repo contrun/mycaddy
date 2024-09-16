@@ -1,48 +1,53 @@
 {
+  description = "Trying to build caddy with plugins declaratively for NixOS";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    gomod2nix.url = "github:tweag/gomod2nix";
-    gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, gomod2nix, ... }@inputs:
-    with flake-utils.lib;
-    eachSystem defaultSystems (system: rec {
-      config = {
-        android_sdk.accept_license = true;
-        allowUnfree = true;
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = import nixpkgs {
+        inherit system;
       };
-      pkgs = import nixpkgs { inherit system config; };
-
-      pkgsToBuildLocalPackages = import nixpkgs {
-        inherit system config;
-        overlays = [ (import "${gomod2nix}/overlay.nix") ];
+      lib = pkgs.lib;
+      caddyWithPlugins = pkgs.callPackage ./pkg.nix {};
+    in let
+      # Caddy Layer4 modules
+      l4CaddyModules = lib.lists.map (name: {
+        inherit name;
+        repo = "github.com/mholt/caddy-l4";
+        version = "3d22d6da412883875f573ee4ecca3dbb3fdf0fd0";
+      }) ["layer4" "modules/l4proxy" "modules/l4tls" "modules/l4proxyprotocol"];
+    in {
+      packages.default = caddyWithPlugins;
+      packages.baseCaddy = caddyWithPlugins.withPlugins {caddyModules = [];};
+      packages.caddyWithL4 = caddyWithPlugins.withPlugins {
+        caddyModules = l4CaddyModules;
+        # vendorHash = "sha256-cpRtLb81BLu6kJqYBVc02/xOK42fjoOn7rokY8hzXgM=";
+        vendorHash = "sha256-Bz2tR1/a2okARCWFEeSEeVUx2mdBe0QKUh5qzKUOF8s=";
       };
-
-      apps = {
-        caddy = {
-          type = "app";
-          program = "${self.packages."${system}".caddy}/bin/caddy";
-        };
-      };
-
-      defaultApp = apps.caddy;
-
-      packages = {
-        caddy = pkgsToBuildLocalPackages.buildGoApplication {
-          pname = "caddy";
-          version = "latest";
-          goPackagePath = "github.com/contrun/mycaddy";
-          src = ./.;
-          modules = ./gomod2nix.toml;
-          nativeBuildInputs = [ pkgs.musl ];
-
-          CGO_ENABLED = 0;
-
-          ldflags =
-            [ "-linkmode external" "-extldflags '-static -L${pkgs.musl}/lib'" ];
-        };
+      caddyWithMany = caddyWithPlugins.withPlugins {
+        caddyModules =
+          [
+            {
+              name = "transform-encoder";
+              repo = "github.com/caddyserver/transform-encoder";
+              version = "f627fc4f76334b7aef8d4ed8c99c7e2bcf94ac7d";
+            }
+            {
+              name = "connegmatcher";
+              repo = "github.com/mpilhlt/caddy-conneg";
+              version = "v0.1.4";
+            }
+          ]
+          ++ l4CaddyModules;
+        vendorHash = "sha256-OjyJdcbLMSvgkHKR4xMF0BgsuA5kdKgDgV+ocuNHUf4=";
       };
     });
 }
