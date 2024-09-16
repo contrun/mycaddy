@@ -6,33 +6,35 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
-    nixpkgs,
-    flake-utils,
-    ...
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
+  outputs =
+    { nixpkgs
+    , flake-utils
+    , ...
+    }:
+    flake-utils.lib.eachDefaultSystem (system:
+    let
       pkgs = import nixpkgs {
         inherit system;
       };
       lib = pkgs.lib;
-      caddyWithPlugins = pkgs.callPackage ./pkg.nix {};
-    in let
+      caddyWithPlugins = pkgs.callPackage ./pkg.nix { };
+    in
+    let
       # Caddy Layer4 modules
-      l4CaddyModules = lib.lists.map (name: {
-        inherit name;
-        repo = "github.com/mholt/caddy-l4";
-        version = "3d22d6da412883875f573ee4ecca3dbb3fdf0fd0";
-      }) ["layer4" "modules/l4proxy" "modules/l4tls" "modules/l4proxyprotocol"];
-    in {
-      packages.default = caddyWithPlugins;
-      packages.baseCaddy = caddyWithPlugins.withPlugins {caddyModules = [];};
-      packages.caddyWithL4 = caddyWithPlugins.withPlugins {
-        caddyModules = l4CaddyModules;
-        # vendorHash = "sha256-cpRtLb81BLu6kJqYBVc02/xOK42fjoOn7rokY8hzXgM=";
-        vendorHash = "sha256-Bz2tR1/a2okARCWFEeSEeVUx2mdBe0QKUh5qzKUOF8s=";
-      };
-      caddyWithMany = caddyWithPlugins.withPlugins {
+      l4CaddyModules = lib.lists.map
+        (name: {
+          inherit name;
+          repo = "github.com/mholt/caddy-l4";
+          version = "4f012d4517cf65b3a2da1308ec6e770c0cf0b656";
+        }) [
+        "layer4"
+      ];
+    in
+    rec {
+      packages.default = caddyWithManyPlugins;
+      packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
+      caddyWithManyPlugins = caddyWithPlugins.withPlugins {
+        vendorHash = "sha256-uvg2dthXS1lGthbwTJt+02pNnSOSS11u6ht3JKBPcR4=";
         caddyModules =
           [
             {
@@ -47,7 +49,6 @@
             }
           ]
           ++ l4CaddyModules;
-        vendorHash = "sha256-OjyJdcbLMSvgkHKR4xMF0BgsuA5kdKgDgV+ocuNHUf4=";
       };
     });
 }
