@@ -47,6 +47,11 @@
               repo = "github.com/caddy-dns/cloudflare";
               version = "89f16b99c18ef49c8bb470a82f895bce01cbaece";
             }
+            # {
+            #   name = "certmagic-s3";
+            #   repo = "github.com/techknowlogick/certmagic-s3";
+            #   version = "aea945d0a811c16bb8e58e30030dd5e7e66d884b";
+            # }
             {
               name = "postgres-storage";
               repo = "github.com/yroc92/postgres-storage";
