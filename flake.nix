@@ -34,9 +34,14 @@
       packages.default = caddyWithManyPlugins;
       packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
       caddyWithManyPlugins = caddyWithPlugins.withPlugins {
-        vendorHash = "sha256-uvg2dthXS1lGthbwTJt+02pNnSOSS11u6ht3JKBPcR4=";
+        vendorHash = "sha256-OIHGxPbBmXSMrm/RcrCNk0nVJY8IbfJUaFxOjHsGJe0=";
         caddyModules =
           [
+            {
+              name = "caddy-json-schema";
+              repo = "github.com/abiosoft/caddy-json-schema";
+              version = "c4d6e132f3af8d5746ea07e4a3f8238727a76b60";
+            }
             {
               name = "transform-encoder";
               repo = "github.com/caddyserver/transform-encoder";
