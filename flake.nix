@@ -34,7 +34,7 @@
       packages.default = caddyWithManyPlugins;
       packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
       caddyWithManyPlugins = caddyWithPlugins.withPlugins {
-        vendorHash = "sha256-+1osrtm+zoUXyQisfvBm2WUWi8h/mcUTe43RtvZKodU=";
+        vendorHash = "sha256-QLd4TYx5urfyvSKoJb+XZ9DwRkxogncVpHc+YIwFjkM=";
         caddyModules =
           [
             {
@@ -46,6 +46,11 @@
               name = "cloudflare";
               repo = "github.com/caddy-dns/cloudflare";
               version = "89f16b99c18ef49c8bb470a82f895bce01cbaece";
+            }
+            {
+              name = "postgres-storage";
+              repo = "github.com/yroc92/postgres-storage";
+              version = "276797aefe401b738781692d278a158c53b99208";
             }
             {
               name = "transform-encoder";
