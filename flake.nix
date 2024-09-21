@@ -34,7 +34,7 @@
       packages.default = caddyWithManyPlugins;
       packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
       caddyWithManyPlugins = caddyWithPlugins.withPlugins {
-        vendorHash = "sha256-QLd4TYx5urfyvSKoJb+XZ9DwRkxogncVpHc+YIwFjkM=";
+        vendorHash = "sha256-nGMYh0niJYe18KTxz9YIuQPHU8HbcshrRNyHOGaEKys=";
         caddyModules =
           [
             {
@@ -56,6 +56,11 @@
               name = "postgres-storage";
               repo = "github.com/yroc92/postgres-storage";
               version = "276797aefe401b738781692d278a158c53b99208";
+            }
+            {
+              name = "replace-response";
+              repo = "github.com/caddyserver/replace-response";
+              version = "f92bc7d0c29d0588f91f29ecb38a0c4ddf3f85f8";
             }
             {
               name = "transform-encoder";
