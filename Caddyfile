@@ -1,0 +1,42 @@
+{
+	debug
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	email {env.ACME_EMAIL}
+	auto_https disable_redirects
+	order replace after encode
+	servers {
+		listener_wrappers {
+			layer4 {
+				@proxy_protocol proxy_protocol
+				route @proxy_protocol {
+					proxy_protocol
+					subroute {
+						@ssh ssh
+						route @ssh {
+							proxy localhost:22
+						}
+					}
+				}
+				@ssh ssh
+				route @ssh {
+					proxy localhost:22
+				}
+			}
+			tls
+		}
+	}
+}
+
+(app) {
+	rewrite /{args[0]} /{args[0]}/
+	handle_path /{args[0]}/* {
+		reverse_proxy {args[1]}
+		replace stream {
+			re "(src|href)=\"/(.*?)\"" "$1=\"/{args[0]}/$2\""
+		}
+	}
+}
+
+localhost:2016 {
+	import app dufs localhost:5000
+}
