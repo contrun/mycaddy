@@ -4,6 +4,35 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
+    caddy-json-schema = {
+      url = "github:abiosoft/caddy-json-schema";
+      flake = false;
+    };
+    caddy-l4 = {
+      url = "github:mholt/caddy-l4";
+      flake = false;
+    };
+    cloudflare = {
+      url = "github:caddy-dns/cloudflare";
+      flake = false;
+    };
+    postgres-storage = {
+      url = "github:yroc92/postgres-storage";
+      flake = false;
+    };
+    replace-response = {
+      url = "github:caddyserver/replace-response";
+      flake = false;
+    };
+    transform-encoder = {
+      url = "github:caddyserver/transform-encoder";
+      flake = false;
+    };
+    caddy-conneg = {
+      url = "github:mpilhlt/caddy-conneg";
+      flake = false;
+    };
   };
 
   outputs =
@@ -19,23 +48,19 @@
       };
       lib = pkgs.lib;
       caddyWithPlugins = pkgs.callPackage ./pkg.nix { };
-    in
-    let
-      # Caddy Layer4 modules
-      l4CaddyModules = lib.lists.map
-        (name: {
-          inherit name;
-          repo = "github.com/mholt/caddy-l4";
-          version = "4f012d4517cf65b3a2da1308ec6e770c0cf0b656";
-        }) [
-        "layer4"
-      ];
+      lockFile = builtins.fromJSON (builtins.readFile ./flake.lock);
+      getModuleInfo = name:
+        let
+          locked = lockFile.nodes.${name}.locked;
+          repo = "github.com/${locked.owner}/${locked.repo}";
+          version = locked.rev;
+        in
+        {
+          inherit name repo version;
+        };
     in
     rec {
       defaultPackage = self.packages."${system}".default;
-
-      defaultApp =
-        flake-utils.lib.mkApp { drv = self.defaultPackage."${system}"; };
 
       packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
 
@@ -44,45 +69,16 @@
       packages.caddy = caddyWithManyPlugins;
       caddyWithManyPlugins = caddyWithPlugins.withPlugins {
         vendorHash = "sha256-nGMYh0niJYe18KTxz9YIuQPHU8HbcshrRNyHOGaEKys=";
-        caddyModules =
+        caddyModules = builtins.map getModuleInfo
           [
-            {
-              name = "caddy-json-schema";
-              repo = "github.com/abiosoft/caddy-json-schema";
-              version = "c4d6e132f3af8d5746ea07e4a3f8238727a76b60";
-            }
-            {
-              name = "cloudflare";
-              repo = "github.com/caddy-dns/cloudflare";
-              version = "89f16b99c18ef49c8bb470a82f895bce01cbaece";
-            }
-            # {
-            #   name = "certmagic-s3";
-            #   repo = "github.com/techknowlogick/certmagic-s3";
-            #   version = "aea945d0a811c16bb8e58e30030dd5e7e66d884b";
-            # }
-            {
-              name = "postgres-storage";
-              repo = "github.com/yroc92/postgres-storage";
-              version = "276797aefe401b738781692d278a158c53b99208";
-            }
-            {
-              name = "replace-response";
-              repo = "github.com/caddyserver/replace-response";
-              version = "f92bc7d0c29d0588f91f29ecb38a0c4ddf3f85f8";
-            }
-            {
-              name = "transform-encoder";
-              repo = "github.com/caddyserver/transform-encoder";
-              version = "f627fc4f76334b7aef8d4ed8c99c7e2bcf94ac7d";
-            }
-            {
-              name = "connegmatcher";
-              repo = "github.com/mpilhlt/caddy-conneg";
-              version = "v0.1.4";
-            }
-          ]
-          ++ l4CaddyModules;
+            "caddy-json-schema"
+            "caddy-l4"
+            "cloudflare"
+            "postgres-storage"
+            "replace-response"
+            "transform-encoder"
+            "caddy-conneg"
+          ];
       };
     });
 }
