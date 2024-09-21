@@ -7,7 +7,8 @@
   };
 
   outputs =
-    { nixpkgs
+    { self
+    , nixpkgs
     , flake-utils
     , ...
     }:
@@ -31,8 +32,16 @@
       ];
     in
     rec {
-      packages.default = caddyWithManyPlugins;
+      defaultPackage = self.packages."${system}".default;
+
+      defaultApp =
+        flake-utils.lib.mkApp { drv = self.defaultPackage."${system}"; };
+
       packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
+
+      packages.default = caddyWithManyPlugins;
+      packages.mycaddy = caddyWithManyPlugins;
+      packages.caddy = caddyWithManyPlugins;
       caddyWithManyPlugins = caddyWithPlugins.withPlugins {
         vendorHash = "sha256-nGMYh0niJYe18KTxz9YIuQPHU8HbcshrRNyHOGaEKys=";
         caddyModules =
