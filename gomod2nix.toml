@@ -25,6 +25,9 @@ schema = 3
   [mod."github.com/Microsoft/go-winio"]
     version = "v0.6.2"
     hash = "sha256-tVNWDUMILZbJvarcl/E7tpSnkn7urqgSHa2Eaka5vSU="
+  [mod."github.com/abiosoft/caddy-json-schema"]
+    version = "v0.0.0-20220621031927-c4d6e132f3af"
+    hash = "sha256-HdSRugUWQPQ6BAv1Qt0PP09yke8qHnvKZY+J27ofOos="
   [mod."github.com/antlr4-go/antlr/v4"]
     version = "v4.13.1"
     hash = "sha256-beAuxHNRUuhzcSJUh/8ztVf1zCUiaT72fg2Jvx0AuNQ="
@@ -37,12 +40,18 @@ schema = 3
   [mod."github.com/beorn7/perks"]
     version = "v1.0.1"
     hash = "sha256-h75GUqfwJKngCJQVE5Ao5wnO3cfKD9lSIteoLp/3xJ4="
+  [mod."github.com/caddy-dns/cloudflare"]
+    version = "v0.0.0-20240703190432-89f16b99c18e"
+    hash = "sha256-XTNt2QfbKmt+Dryce8FRVhLrHdPkxhj0PPjCDijMuEs="
   [mod."github.com/caddyserver/caddy/v2"]
     version = "v2.8.4"
     hash = "sha256-Cwnn4zudKQApxVxmdIFSiD813S00qzdmFjAA1PFoTE8="
   [mod."github.com/caddyserver/certmagic"]
     version = "v0.21.3"
     hash = "sha256-UhKUVN3a1iAcGk2KtLKD9PBf6rtmIFb8jVVuCdKBHuc="
+  [mod."github.com/caddyserver/replace-response"]
+    version = "v0.0.0-20240710174758-f92bc7d0c29d"
+    hash = "sha256-EZ9l4XdF3C9+cpsoDpznct1wT3VsV8LHzgo9kGm+1v8="
   [mod."github.com/caddyserver/zerossl"]
     version = "v0.1.3"
     hash = "sha256-BqaTshe3Hum7YSILJNFG0Y2fzgwFN42FzU2qQXWluZo="
@@ -148,6 +157,9 @@ schema = 3
   [mod."github.com/huandu/xstrings"]
     version = "v1.5.0"
     hash = "sha256-q4F/rzbWMDmOVv07RVApdpfIsRNRByfOUQPEKsTq5BM="
+  [mod."github.com/icholy/replace"]
+    version = "v0.6.0"
+    hash = "sha256-tXSquEOLmfv62h1jFefqBzu7m408l2ECyNg9f5Yo3CE="
   [mod."github.com/inconshreveable/mousetrap"]
     version = "v1.1.0"
     hash = "sha256-XWlYH0c8IcxAwQTnIi6WYqq44nOKUylSWxWO/vi+8pE="
@@ -172,6 +184,12 @@ schema = 3
   [mod."github.com/klauspost/cpuid/v2"]
     version = "v2.2.8"
     hash = "sha256-/E58BnABQYxO+cmiue7OQqRLWkd/Lh8grX8DjTU4tk8="
+  [mod."github.com/lib/pq"]
+    version = "v1.10.4"
+    hash = "sha256-gyHvt7ubYrrhwGKd3WWEkA15hlZ98NKDst4CkusDaCs="
+  [mod."github.com/libdns/cloudflare"]
+    version = "v0.1.2-0.20240604123710-0549667a10ab"
+    hash = "sha256-7MTdbkr3vyo0sYorkISmLL618zeAJ5fltcv+7yQQ79I="
   [mod."github.com/libdns/libdns"]
     version = "v0.2.2"
     hash = "sha256-RaJz49yg14WVAxmmqvNfsL4PmQ16asg1rIipIKM3/QM="
@@ -298,6 +316,9 @@ schema = 3
   [mod."github.com/urfave/cli"]
     version = "v1.22.15"
     hash = "sha256-7w+TJdKTHNmGq+pAJtPVMA073ruunHErzdxebH0dsVU="
+  [mod."github.com/yroc92/postgres-storage"]
+    version = "v0.0.0-20230310195636-276797aefe40"
+    hash = "sha256-Cc2PCldDWlj/szufAkcjXAG9dFCRY5a4JD+48ajaky8="
   [mod."github.com/zeebo/blake3"]
     version = "v0.2.4"
     hash = "sha256-Q8KSVhnSR1cwfTp4LkPdfI1UWWkDDHa9fslNsa3Qfo8="
