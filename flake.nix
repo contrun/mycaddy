@@ -1,84 +1,51 @@
 {
-  description = "Trying to build caddy with plugins declaratively for NixOS";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    caddy-json-schema = {
-      url = "github:abiosoft/caddy-json-schema";
-      flake = false;
-    };
-    caddy-l4 = {
-      url = "github:mholt/caddy-l4";
-      flake = false;
-    };
-    cloudflare = {
-      url = "github:caddy-dns/cloudflare";
-      flake = false;
-    };
-    postgres-storage = {
-      url = "github:yroc92/postgres-storage";
-      flake = false;
-    };
-    replace-response = {
-      url = "github:caddyserver/replace-response";
-      flake = false;
-    };
-    transform-encoder = {
-      url = "github:caddyserver/transform-encoder";
-      flake = false;
-    };
-    caddy-conneg = {
-      url = "github:mpilhlt/caddy-conneg";
-      flake = false;
-    };
+    gomod2nix.url = "github:nix-community/gomod2nix";
+    gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , flake-utils
-    , ...
-    }:
-    flake-utils.lib.eachDefaultSystem (system:
-    let
-      pkgs = import nixpkgs {
-        inherit system;
+  outputs = { self, nixpkgs, flake-utils, gomod2nix, ... }@inputs:
+    with flake-utils.lib;
+    eachSystem defaultSystems (system: rec {
+      config = {
+        android_sdk.accept_license = true;
+        allowUnfree = true;
       };
-      lib = pkgs.lib;
-      caddyWithPlugins = pkgs.callPackage ./pkg.nix { };
-      lockFile = builtins.fromJSON (builtins.readFile ./flake.lock);
-      getModuleInfo = name:
-        let
-          locked = lockFile.nodes.${name}.locked;
-          repo = "github.com/${locked.owner}/${locked.repo}";
-          version = locked.rev;
-        in
-        {
-          inherit name repo version;
+      pkgsOriginal = import nixpkgs { inherit system config; };
+      pkgsWithOverlays = import nixpkgs {
+        inherit system config;
+        overlays = [ (import "${gomod2nix}/overlay.nix") ];
+      };
+
+      devShell = with pkgsWithOverlays; mkShell { buildInputs = [ go gomod2nix.packages.${system}.default ]; };
+
+      apps = rec {
+        default = caddy;
+        caddy = {
+          type = "app";
+          program = "${self.packages."${system}".caddy}/bin/caddy";
         };
-    in
-    rec {
-      defaultPackage = self.packages."${system}".default;
-
-      packages.baseCaddy = caddyWithPlugins.withPlugins { caddyModules = [ ]; };
-
-      packages.default = caddyWithManyPlugins;
-      packages.mycaddy = caddyWithManyPlugins;
-      packages.caddy = caddyWithManyPlugins;
-      caddyWithManyPlugins = caddyWithPlugins.withPlugins {
-        vendorHash = "sha256-nGMYh0niJYe18KTxz9YIuQPHU8HbcshrRNyHOGaEKys=";
-        caddyModules = builtins.map getModuleInfo
-          [
-            "caddy-json-schema"
-            "caddy-l4"
-            "cloudflare"
-            "postgres-storage"
-            "replace-response"
-            "transform-encoder"
-            "caddy-conneg"
-          ];
       };
+      defaultApp = apps.default;
+
+      packages = rec {
+        default = caddy;
+        caddy = with pkgsWithOverlays; buildGoApplication {
+          pname = "caddy";
+          version = "latest";
+          goPackagePath = "github.com/contrun/mycaddy/cmd/caddy";
+          src = ./.;
+          modules = ./gomod2nix.toml;
+          nativeBuildInputs = [ musl ];
+
+          CGO_ENABLED = 0;
+
+          ldflags =
+            [ "-extldflags '-static -L${musl}/lib'" ];
+        };
+      };
+      defaultPackage = packages.default;
     });
 }
