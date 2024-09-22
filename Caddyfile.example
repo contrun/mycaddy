@@ -1,7 +1,7 @@
 {
 	debug
-	acme_dns cloudflare {$CLOUDFLARE_API_TOKEN:faketoken}
-	email {$ACME_EMAIL:admin@example.com}
+	acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	email {env.ACME_EMAIL}
 	auto_https disable_redirects
 	order replace after encode
 	servers {
@@ -30,13 +30,21 @@
 	order authorize before basicauth
 
 	security {
-		oauth identity provider github {$GITHUB_CLIENT_ID} {$GITHUB_CLIENT_SECRET}
+		oauth identity provider generic {
+			realm generic
+			driver generic
+			client_id {env.OIDC_CLIENT_ID}
+			client_secret {env.OIDC_CLIENT_SECRET}
+			scopes openid email profile
+			base_auth_url {env.OIDC_BASE_URL}
+			metadata_url {env.OIDC_BASE_URL}/.well-known/openid-configuration
+		}
 
 		authentication portal myportal {
 			crypto default token lifetime 3600
-			crypto key sign-verify {$JWT_SHARED_KEY:428f41ab-67ec-47d1-8633-bcade9dcc7ed}
+			crypto key sign-verify {env.JWT_SHARED_KEY}
 			cookie domain {http.request.hostport}
-			enable identity provider github
+			enable identity provider generic
 			ui {
 				links {
 					"My Identity" "/auth/whoami" icon "las la-user"
@@ -44,20 +52,20 @@
 			}
 
 			transform user {
-				match realm github
+				match realm generic
 				action add role authp/user
 			}
 
 			transform user {
-				match realm github
-				match sub github.com/contrun
+				match realm generic
+				match email e@home.arpa
 				action add role authp/admin
 			}
 		}
 
 		authorization policy mypolicy {
 			set auth url /auth/
-			crypto key verify {$JWT_SHARED_KEY:428f41ab-67ec-47d1-8633-bcade9dcc7ed}
+			crypto key verify {env.JWT_SHARED_KEY}
 
 			allow roles authp/admin authp/user
 			validate bearer header
