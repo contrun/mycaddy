@@ -100,6 +100,9 @@ schema = 3
   [mod."github.com/go-asn1-ber/asn1-ber"]
     version = "v1.5.7"
     hash = "sha256-omBQHBj3XvqYDc8TM59RK2H3EdaJ5X0FyC7pKHDQQXU="
+  [mod."github.com/go-ini/ini"]
+    version = "v1.67.0"
+    hash = "sha256-V10ahGNGT+NLRdKUyRg1dos5RxLBXBk1xutcnquc/+4="
   [mod."github.com/go-jose/go-jose/v3"]
     version = "v3.0.3"
     hash = "sha256-PsjN1vVhAFI6X11iIkpQU4i7Ax6FvkhXNxApeBa2BvA="
@@ -124,6 +127,9 @@ schema = 3
   [mod."github.com/go-task/slim-sprig/v3"]
     version = "v3.0.0"
     hash = "sha256-vCCw4MXVBm33VNLXcOBccVDD1CSnzDvDdWB6w5FN1cA="
+  [mod."github.com/goccy/go-json"]
+    version = "v0.10.3"
+    hash = "sha256-ZOzfwCXh+qp+hp+UnC0t422hUV0Cq5KANXkx8hcLp7s="
   [mod."github.com/golang-jwt/jwt/v4"]
     version = "v4.5.0"
     hash = "sha256-dyKL8wQRApkdCkKxJ1knllvixsrBLw+BtRS0SjlN7NQ="
@@ -220,6 +226,12 @@ schema = 3
   [mod."github.com/miekg/dns"]
     version = "v1.1.62"
     hash = "sha256-zEw71H0nX2C1fJykDcUHBthi9TT4a7vFidJ4RS5TunE="
+  [mod."github.com/minio/md5-simd"]
+    version = "v1.1.2"
+    hash = "sha256-vykcXvy2VBBAXnJott/XsGTT0gk2UL36JzZKfJ1KAUY="
+  [mod."github.com/minio/minio-go/v7"]
+    version = "v7.0.75"
+    hash = "sha256-Y8Z0X/D2JiaQT3bQBYzuOtQp8igEbU5BjfLy/Dw1w1c="
   [mod."github.com/mitchellh/copystructure"]
     version = "v1.2.0"
     hash = "sha256-VR9cPZvyW62IHXgmMw8ee+hBDThzd2vftgPksQYR/Mc="
@@ -310,6 +322,9 @@ schema = 3
   [mod."github.com/tailscale/tscert"]
     version = "v0.0.0-20240608151842-d3f834017e53"
     hash = "sha256-7vp5qtuwweJewicY4XQSDY8IpGxKOsCQqDOyjkJMt28="
+  [mod."github.com/techknowlogick/certmagic-s3"]
+    version = "v1.3.0"
+    hash = "sha256-EftQR9m/Ox9OOIdPY9mbTR5h8SIrhFJFkU6tJ4nUENc="
   [mod."github.com/things-go/go-socks5"]
     version = "v0.0.5"
     hash = "sha256-LP1Pxv/2zbLpL5/5jZHM6tTc1ov4WjGYgVdX6IDd2IU="

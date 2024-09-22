@@ -9,6 +9,7 @@ import (
 	_ "github.com/caddyserver/replace-response"
 	_ "github.com/greenpau/caddy-security"
 	_ "github.com/mholt/caddy-l4"
+	_ "github.com/techknowlogick/certmagic-s3"
 	_ "github.com/yroc92/postgres-storage"
 )
 

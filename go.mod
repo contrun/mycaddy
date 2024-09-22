@@ -11,6 +11,7 @@ require (
 	github.com/caddyserver/replace-response v0.0.0-20240710174758-f92bc7d0c29d
 	github.com/greenpau/caddy-security v1.1.29
 	github.com/mholt/caddy-l4 v0.0.0-20240912211411-4f012d4517cf
+	github.com/techknowlogick/certmagic-s3 v1.3.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
 )
 
@@ -44,6 +45,7 @@ require (
 	github.com/emersion/go-sasl v0.0.0-20231106173351-e73c9f7bad43 // indirect
 	github.com/emersion/go-smtp v0.21.3 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
+	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
 	github.com/go-jose/go-jose/v4 v4.0.4 // indirect
 	github.com/go-kit/kit v0.13.0 // indirect
@@ -52,6 +54,7 @@ require (
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
+	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/glog v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -82,6 +85,8 @@ require (
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/mholt/acmez/v2 v2.0.2 // indirect
 	github.com/miekg/dns v1.1.62 // indirect
+	github.com/minio/md5-simd v1.1.2 // indirect
+	github.com/minio/minio-go/v7 v7.0.75 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/go-ps v1.0.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
