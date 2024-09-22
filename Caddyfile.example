@@ -32,18 +32,19 @@
 	handle_path /{args[0]}/* {
 		reverse_proxy {args[1]}
 		replace stream {
-			re "(src|href)=\"/(.*?)\"" "$1=\"/{args[0]}/$2\""
+			re "(?P<tag>src|href)=\"((?P<slash>/?)(?P<url>[^/\"#][^:\"]+))\"" "${tag}=\"${slash}{args[0]}/${url}\""
 		}
 	}
 }
 
 localhost:{$CADDY_PORT:2016} 127.0.0.1:{$CADDY_PORT:2016} :{$CADDY_PORT:2016} {
-  log
+	log
 
 	rewrite /health-check /health-check/
 	handle /health-check/ {
-    	respond "Hello, world!"
-  }
+		respond "Hello, world!"
+	}
 
 	import app dufs localhost:5000
+	import app syncthing localhost:8384
 }
