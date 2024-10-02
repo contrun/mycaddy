@@ -42,11 +42,24 @@ jobs:
       
     - name: Build
       run: |
-        if [ ${{ matrix.goos }} == "linux" ]; then
-          go build -v -o caddy.fat ./cmd/caddy
-          objcopy --only-keep-debug caddy.fat caddy.debug
-          objcopy --strip-debug --add-gnu-debuglink=caddy.debug caddy.fat caddy
+        export GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }}
+        BINARY_NAME="caddy-${{ matrix.goos }}-${{ matrix.goarch }}"
+        if [[ ${{ matrix.goos }} == "linux" ]] && [[ ${{ matrix.goarch }} == "amd64" ]] ; then
+          go build -v -o "$BINARY_NAME.fat" ./cmd/caddy
+          objcopy --only-keep-debug "$BINARY_NAME.fat" "$BINARY_NAME.debug"
+          objcopy --strip-debug --add-gnu-debuglink="$BINARY_NAME.debug" "$BINARY_NAME.fat" "$BINARY_NAME"
         else
           export ldflags="${ldflags:--s -w}"
-          go build -v ./cmd/caddy
+          go build -v -o "$BINARY_NAME" ./cmd/caddy
         fi
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        # If we are releasing an updates then set release_tag to be null,
+        # otherwise if the branch name is "main" then set the release_tag to be "latest",
+        # otherwise set the release_tag to be "dev".
+        tag_name: ${{ (github.event_tag == 'release' && null) || (github.ref == 'refs/heads/main' && 'latest' || 'dev') }}
+        files: |
+          caddy*
+        make_latest: ${{ github.ref == 'refs/heads/main' }}

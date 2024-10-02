@@ -24,7 +24,7 @@
           buildInputs = [ go gomod2nix.packages.${system}.default ];
           CGO_ENABLED = 0;
           ldflags =
-            [ "-s" "-w" "-extldflags '-static -L${musl}/lib'" ];
+            [ "-extldflags '-static -L${musl}/lib'" ];
         };
         default = with pkgsWithOverlays; mkShell {
           buildInputs = [ go gomod2nix.packages.${system}.default ];
