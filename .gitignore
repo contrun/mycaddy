@@ -13,6 +13,6 @@ tmp/
 temp.nix
 .direnv/
 .envrc.private
-/caddy
-/mycaddy
+/caddy*
+/mycaddy*
 /Caddyfile

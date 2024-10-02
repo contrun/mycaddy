@@ -19,11 +19,16 @@
         overlays = [ (import "${gomod2nix}/overlay.nix") ];
       };
 
-      devShell = with pkgsWithOverlays; mkShell {
-        buildInputs = [ go gomod2nix.packages.${system}.default ];
-        CGO_ENABLED = 0;
-        ldflags =
-          [ "-extldflags '-static -L${musl}/lib'" ];
+      devShells = {
+        ci = with pkgsWithOverlays; mkShell {
+          buildInputs = [ go gomod2nix.packages.${system}.default ];
+          CGO_ENABLED = 0;
+          ldflags =
+            [ "-s" "-w" "-extldflags '-static -L${musl}/lib'" ];
+        };
+        default = with pkgsWithOverlays; mkShell {
+          buildInputs = [ go gomod2nix.packages.${system}.default ];
+        };
       };
 
       apps = rec {
