@@ -1,8 +1,8 @@
 module github.com/contrun/mycaddy
 
-go 1.22.0
+go 1.22.2
 
-toolchain go1.22.5
+toolchain go1.22.7
 
 require (
 	github.com/abiosoft/caddy-json-schema v0.0.0-20220621031927-c4d6e132f3af
@@ -10,6 +10,7 @@ require (
 	github.com/caddyserver/caddy/v2 v2.8.4
 	github.com/caddyserver/replace-response v0.0.0-20240710174758-f92bc7d0c29d
 	github.com/greenpau/caddy-security v1.1.29
+	github.com/imgk/caddy-trojan v0.0.0-20240603105249-3fcb4dacf8f0
 	github.com/mholt/caddy-l4 v0.0.0-20240912211411-4f012d4517cf
 	github.com/techknowlogick/certmagic-s3 v1.3.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
@@ -62,10 +63,12 @@ require (
 	github.com/google/cel-go v0.21.0 // indirect
 	github.com/google/pprof v0.0.0-20240910150728-a0b0bb1d4134 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/gorilla/websocket v1.5.1 // indirect
 	github.com/greenpau/go-authcrunch v1.1.4 // indirect
 	github.com/greenpau/versioned v1.0.30 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/icholy/replace v0.6.0 // indirect
+	github.com/imgk/memory-go v0.0.0-20220328012817-37cdd311f1a3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
