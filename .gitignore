@@ -12,6 +12,7 @@ prefs.*.json
 tmp/
 temp.nix
 .direnv/
+.envrc.private
 /caddy
 /mycaddy
 /Caddyfile
