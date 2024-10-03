@@ -16,3 +16,4 @@ temp.nix
 /caddy*
 /mycaddy*
 /Caddyfile
+/config.dhall
