@@ -97,6 +97,9 @@ schema = 3
   [mod."github.com/emersion/go-smtp"]
     version = "v0.21.3"
     hash = "sha256-hh0KOKzK+7O/GxKsLOKm3DsjWD+b2hlF8pK4Oqe2O/0="
+  [mod."github.com/fxamacker/cbor/v2"]
+    version = "v2.7.0"
+    hash = "sha256-ln5ms4UxxQ563bZ2UaNLG/bNsmohlgK18K+UUOyZNA0="
   [mod."github.com/go-asn1-ber/asn1-ber"]
     version = "v1.5.7"
     hash = "sha256-omBQHBj3XvqYDc8TM59RK2H3EdaJ5X0FyC7pKHDQQXU="
@@ -232,6 +235,9 @@ schema = 3
   [mod."github.com/mholt/caddy-l4"]
     version = "v0.0.0-20240912211411-4f012d4517cf"
     hash = "sha256-M+FEiqV/uLIYv+FbXPTWME3OyT/jN5ZFtHQ+paBirWo="
+  [mod."github.com/mholt/dhall-adapter"]
+    version = "v0.0.0-20220715002937-fcdaaf4e06d9"
+    hash = "sha256-GViose5lSvn8jbbxFc9IzDiwqkrKvK9TqsyV2qsrGrw="
   [mod."github.com/miekg/dns"]
     version = "v1.1.62"
     hash = "sha256-zEw71H0nX2C1fJykDcUHBthi9TT4a7vFidJ4RS5TunE="
@@ -259,6 +265,9 @@ schema = 3
   [mod."github.com/onsi/ginkgo/v2"]
     version = "v2.20.2"
     hash = "sha256-cWSrkASwco0tpynwHGiLvS4nZQCjk+eIvX/B9ohURqI="
+  [mod."github.com/philandstuff/dhall-golang/v6"]
+    version = "v6.0.2"
+    hash = "sha256-gI6PZbAPvn3d0rPR7bQf6qeCQTd/49ijEnJhjuA/jAg="
   [mod."github.com/pires/go-proxyproto"]
     version = "v0.7.0"
     hash = "sha256-BIpJJu2ZIPrNURelm5VEejORQPMBHoCoOyjcXkrhKNw="
@@ -343,6 +352,9 @@ schema = 3
   [mod."github.com/urfave/cli"]
     version = "v1.22.15"
     hash = "sha256-7w+TJdKTHNmGq+pAJtPVMA073ruunHErzdxebH0dsVU="
+  [mod."github.com/x448/float16"]
+    version = "v0.8.4"
+    hash = "sha256-VKzMTMS9pIB/cwe17xPftCSK9Mf4Y6EuBEJlB4by5mE="
   [mod."github.com/yroc92/postgres-storage"]
     version = "v0.0.0-20230310195636-276797aefe40"
     hash = "sha256-Cc2PCldDWlj/szufAkcjXAG9dFCRY5a4JD+48ajaky8="

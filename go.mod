@@ -12,6 +12,7 @@ require (
 	github.com/greenpau/caddy-security v1.1.29
 	github.com/imgk/caddy-trojan v0.0.0-20240603105249-3fcb4dacf8f0
 	github.com/mholt/caddy-l4 v0.0.0-20240912211411-4f012d4517cf
+	github.com/mholt/dhall-adapter v0.0.0-20220715002937-fcdaaf4e06d9
 	github.com/mohammed90/caddy-storage-loader v1.0.0
 	github.com/techknowlogick/certmagic-s3 v1.3.0
 	github.com/yroc92/postgres-storage v0.0.0-20230310195636-276797aefe40
@@ -46,6 +47,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/emersion/go-sasl v0.0.0-20231106173351-e73c9f7bad43 // indirect
 	github.com/emersion/go-smtp v0.21.3 // indirect
+	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
@@ -96,6 +98,7 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/onsi/ginkgo/v2 v2.20.2 // indirect
+	github.com/philandstuff/dhall-golang/v6 v6.0.2 // indirect
 	github.com/pires/go-proxyproto v0.7.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.20.3 // indirect
@@ -123,6 +126,7 @@ require (
 	github.com/tailscale/tscert v0.0.0-20240608151842-d3f834017e53 // indirect
 	github.com/things-go/go-socks5 v0.0.5 // indirect
 	github.com/urfave/cli v1.22.15 // indirect
+	github.com/x448/float16 v0.8.4 // indirect
 	github.com/zeebo/blake3 v0.2.4 // indirect
 	go.etcd.io/bbolt v1.3.11 // indirect
 	go.step.sm/cli-utils v0.9.0 // indirect
