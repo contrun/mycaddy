@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     gomod2nix.url = "github:nix-community/gomod2nix";
     gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -20,15 +20,16 @@
       };
 
       devShells = {
-        ci = with pkgsWithOverlays; mkShell {
-          buildInputs = [ go gomod2nix.packages.${system}.default ];
-          CGO_ENABLED = 0;
-          ldflags =
-            [ "-extldflags '-static -L${musl}/lib'" ];
-        };
-        default = with pkgsWithOverlays; mkShell {
-          buildInputs = [ go gomod2nix.packages.${system}.default ];
-        };
+        ci = with pkgsWithOverlays;
+          mkShell {
+            buildInputs = [ go gomod2nix.packages.${system}.default ];
+            CGO_ENABLED = 0;
+            ldflags = [ "-extldflags '-static -L${musl}/lib'" ];
+          };
+        default = with pkgsWithOverlays;
+          mkShell {
+            buildInputs = [ go gomod2nix.packages.${system}.default ];
+          };
       };
 
       apps = rec {
@@ -42,18 +43,18 @@
 
       packages = rec {
         default = caddy;
-        caddy = with pkgsWithOverlays; buildGoApplication {
-          pname = "caddy";
-          version = "latest";
-          goPackagePath = "github.com/contrun/mycaddy/cmd/caddy";
-          src = ./.;
-          modules = ./gomod2nix.toml;
-          nativeBuildInputs = [ musl ];
+        caddy = with pkgsWithOverlays;
+          buildGoApplication {
+            pname = "caddy";
+            version = "latest";
+            goPackagePath = "github.com/contrun/mycaddy/cmd/caddy";
+            src = ./.;
+            modules = ./gomod2nix.toml;
+            nativeBuildInputs = [ musl ];
 
-          CGO_ENABLED = 0;
-          ldflags =
-            [ "-extldflags '-static -L${musl}/lib'" ];
-        };
+            CGO_ENABLED = 0;
+            ldflags = [ "-extldflags '-static -L${musl}/lib'" ];
+          };
       };
       defaultPackage = packages.default;
     });
