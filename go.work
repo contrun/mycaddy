@@ -1,0 +1,6 @@
+go 1.24.2
+
+use (
+	./cmd/caddy
+	./pkg/postgres-storage
+)

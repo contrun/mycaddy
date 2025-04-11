@@ -1,4 +1,4 @@
-module github.com/yroc92/postgres-storage
+module github.com/contrun/mycaddy/pkg/postgres-storage
 
 go 1.18
 
