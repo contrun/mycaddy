@@ -10,7 +10,6 @@ require (
 	github.com/caddyserver/caddy/v2 v2.9.1
 	github.com/caddyserver/replace-response v0.0.0-20241211194404-3865845790a7
 	github.com/greenpau/caddy-security v1.1.31
-	github.com/imgk/caddy-trojan v0.0.0-20250113133935-58f1bc14a563
 	github.com/mholt/caddy-l4 v0.0.0-20250124234235-87e3e5e2c7f9
 	github.com/mholt/dhall-adapter v0.0.0-20220715002937-fcdaaf4e06d9
 	github.com/mohammed90/caddy-storage-loader v1.0.0
@@ -64,12 +63,10 @@ require (
 	github.com/google/cel-go v0.24.1 // indirect
 	github.com/google/pprof v0.0.0-20250317173921-a4b03ec1a45e // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/greenpau/go-authcrunch v1.1.7 // indirect
 	github.com/greenpau/versioned v1.0.30 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/icholy/replace v0.6.0 // indirect
-	github.com/imgk/memory-go v0.0.0-20220328012817-37cdd311f1a3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
