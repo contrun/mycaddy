@@ -12,6 +12,9 @@ import (
 	_ "github.com/mholt/dhall-adapter"
 	_ "github.com/mohammed90/caddy-storage-loader"
 	_ "github.com/techknowlogick/certmagic-s3"
+
+	// Add our custom WebSocket proxy module
+	_ "github.com/contrun/mycaddy/pkg/wspproxy"
 )
 
 func main() {
