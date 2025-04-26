@@ -5,6 +5,7 @@ import (
 
 	// plug in Caddy modules here
 	_ "github.com/caddy-dns/cloudflare"
+	_ "github.com/caddyserver/forwardproxy"
 	_ "github.com/caddyserver/replace-response"
 	_ "github.com/greenpau/caddy-security"
 	_ "github.com/mholt/caddy-l4"
@@ -12,6 +13,7 @@ import (
 	_ "github.com/techknowlogick/certmagic-s3"
 
 	_ "github.com/contrun/mycaddy/pkg/postgres-storage"
+	_ "github.com/contrun/mycaddy/pkg/quicssh-proxy"
 )
 
 func main() {
