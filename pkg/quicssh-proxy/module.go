@@ -8,7 +8,6 @@ import (
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
-	"github.com/quic-go/quic-go"
 	"go.uber.org/zap"
 )
 
@@ -35,7 +34,7 @@ type QuicSSHProxy struct {
 	RestrictDest []string `json:"restrict_dest,omitempty"`
 
 	// Internal fields
-	listener       *quic.Listener
+	multiListener  *MultiListenerWrapper
 	logger         *zap.Logger
 	reverseTunnels map[string]string // map[hostname]destination
 	tunnelsMu      sync.RWMutex
@@ -63,10 +62,10 @@ func (q *QuicSSHProxy) Provision(ctx caddy.Context) error {
 	q.logger = ctx.Logger(q)
 	q.reverseTunnels = make(map[string]string)
 
-	// Start the QUIC listener if an address is configured
+	// Start the listeners if an address is configured
 	if q.ListenAddr != "" {
 		if err := q.Start(); err != nil {
-			return fmt.Errorf("starting QUIC listener: %w", err)
+			return fmt.Errorf("starting listeners: %w", err)
 		}
 	}
 

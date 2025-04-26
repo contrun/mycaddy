@@ -1,7 +1,7 @@
+// Package quicsshproxy provides listener wrappers for QUIC and WebSocket connections
 package quicsshproxy
 
 import (
-	"context"
 	"crypto/tls"
 	"errors"
 	"fmt"
@@ -13,7 +13,6 @@ import (
 
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
 	"github.com/coder/websocket"
-	"github.com/quic-go/quic-go"
 	"go.uber.org/zap"
 )
 
@@ -63,122 +62,126 @@ func (q *QuicSSHProxy) handleWebSocket(w http.ResponseWriter, r *http.Request) e
 	}
 }
 
-// Start starts the QUIC listener
+// Start starts the listeners
 func (q *QuicSSHProxy) Start() error {
-	// Generate or load TLS certificate
-	var tlsConfig *tls.Config
-	var err error
+	var listeners []ListenerWrapper
 
-	if q.CertFile != "" && q.KeyFile != "" {
-		// Load custom certificate
-		cert, err := tls.LoadX509KeyPair(q.CertFile, q.KeyFile)
+	// Create QUIC listener if an address is configured
+	if q.ListenAddr != "" {
+		// Generate or load TLS certificate
+		var tlsConfig *tls.Config
+		var err error
+
+		if q.CertFile != "" && q.KeyFile != "" {
+			// Load custom certificate
+			cert, err := tls.LoadX509KeyPair(q.CertFile, q.KeyFile)
+			if err != nil {
+				return fmt.Errorf("loading TLS certificate: %w", err)
+			}
+			tlsConfig = &tls.Config{
+				Certificates: []tls.Certificate{cert},
+				NextProtos:   []string{"quicssh"},
+			}
+		} else {
+			// Generate self-signed certificate
+			tlsConfig, err = generateTLSConfig()
+			if err != nil {
+				return fmt.Errorf("generating TLS config: %w", err)
+			}
+		}
+
+		// Create QUIC listener wrapper
+		quicListener, err := NewQUICListenerWrapper(q.ListenAddr, tlsConfig, q.logger)
 		if err != nil {
-			return fmt.Errorf("loading TLS certificate: %w", err)
+			return err
 		}
-		tlsConfig = &tls.Config{
-			Certificates: []tls.Certificate{cert},
-			NextProtos:   []string{"quicssh"},
-		}
-	} else {
-		// Generate self-signed certificate
-		tlsConfig, err = generateTLSConfig()
-		if err != nil {
-			return fmt.Errorf("generating TLS config: %w", err)
-		}
+		listeners = append(listeners, quicListener)
 	}
 
-	// Start QUIC listener
-	listener, err := quic.ListenAddr(q.ListenAddr, tlsConfig, nil)
-	if err != nil {
-		return fmt.Errorf("starting QUIC listener: %w", err)
-	}
-	q.listener = listener
+	// Create the multi-listener wrapper
+	if len(listeners) > 0 {
+		q.multiListener = NewMultiListenerWrapper(listeners, q.logger)
+		q.multiListener.Start()
 
-	// Start accepting connections
-	go q.acceptLoop()
+		// Start accepting connections
+		go q.acceptLoop()
+	}
 
 	return nil
 }
 
-// Stop stops the QUIC listener
+// Stop stops the listeners
 func (q *QuicSSHProxy) Stop() error {
-	if q.listener != nil {
-		return q.listener.Close()
+	if q.multiListener != nil {
+		return q.multiListener.Close()
 	}
 	return nil
 }
 
-// acceptLoop accepts and handles QUIC connections
+// acceptLoop accepts and handles connections
 func (q *QuicSSHProxy) acceptLoop() {
-	ctx := context.Background()
 	for {
-		session, err := q.listener.Accept(ctx)
+		conn, err := q.multiListener.Accept()
 		if err != nil {
 			if errors.Is(err, net.ErrClosed) {
 				return // Listener closed, exit loop
 			}
-			q.logger.Error("accepting QUIC connection", zap.Error(err))
+			q.logger.Error("accepting connection", zap.Error(err))
 			continue
 		}
 
-		go q.handleSession(ctx, session)
+		go q.handleConnection(conn)
 	}
 }
 
-// handleSession processes a QUIC session
-func (q *QuicSSHProxy) handleSession(ctx context.Context, session quic.Connection) {
-	defer session.CloseWithError(0, "session closed")
+// handleConnection handles a connection
+func (q *QuicSSHProxy) handleConnection(conn ConnWrapper) {
+	defer conn.Close()
 
-	// Extract SNI from connection for destination routing
-	tlsInfo := session.ConnectionState().TLS
-	serverName := tlsInfo.ServerName
+	var destination string
 
-	// Check if this is a connection to a reverse tunnel
-	q.tunnelsMu.RLock()
-	dest, ok := q.reverseTunnels[serverName]
-	q.tunnelsMu.RUnlock()
+	// Determine the destination based on the connection type
+	switch c := conn.(type) {
+	case *QUICConnWrapper:
+		// For QUIC connections, use the SNI as the destination
+		serverName := c.GetServerName()
 
-	if ok {
-		q.logger.Info("routing to reverse tunnel",
-			zap.String("server_name", serverName),
-			zap.String("destination", dest))
-		q.handleReverseConnection(ctx, session, dest)
+		// Check if this is a connection to a reverse tunnel
+		q.tunnelsMu.RLock()
+		dest, ok := q.reverseTunnels[serverName]
+		q.tunnelsMu.RUnlock()
+
+		if ok {
+			q.logger.Info("routing to reverse tunnel",
+				zap.String("server_name", serverName),
+				zap.String("destination", dest))
+			destination = dest
+		} else {
+			destination = serverName
+		}
+
+	case *WebSocketConnWrapper:
+		// For WebSocket connections, the target is provided in the wrapper
+		destination = c.GetTarget()
+
+	default:
+		q.logger.Error("unknown connection type", zap.String("type", fmt.Sprintf("%T", conn)))
 		return
 	}
 
-	// This is a direct connection, handle the stream
-	for {
-		stream, err := session.AcceptStream(ctx)
-		if err != nil {
-			if errors.Is(err, net.ErrClosed) {
-				return // Session closed
-			}
-			q.logger.Error("accepting stream", zap.Error(err))
-			return
-		}
-
-		// Handle each stream in a goroutine
-		go q.handleDirectStream(ctx, stream, serverName)
-	}
-}
-
-// handleDirectStream forwards a QUIC stream to the destination
-func (q *QuicSSHProxy) handleDirectStream(ctx context.Context, stream quic.Stream, dest string) {
-	defer stream.Close()
-
 	// Check if the destination is allowed
-	if !q.isDestinationAllowed(dest) {
-		q.logger.Warn("destination not allowed", zap.String("destination", dest))
+	if !q.isDestinationAllowed(destination) {
+		q.logger.Warn("destination not allowed", zap.String("destination", destination))
 		return
 	}
 
 	// Connect to the destination
-	conn, err := net.Dial("tcp", dest)
+	targetConn, err := net.Dial("tcp", destination)
 	if err != nil {
-		q.logger.Error("dialing destination", zap.Error(err), zap.String("destination", dest))
+		q.logger.Error("dialing destination", zap.Error(err), zap.String("destination", destination))
 		return
 	}
-	defer conn.Close()
+	defer targetConn.Close()
 
 	// Bidirectional copy
 	var wg sync.WaitGroup
@@ -186,14 +189,12 @@ func (q *QuicSSHProxy) handleDirectStream(ctx context.Context, stream quic.Strea
 
 	go func() {
 		defer wg.Done()
-		io.Copy(stream, conn)
-		stream.CancelRead(0)
+		io.Copy(conn, targetConn)
 	}()
 
 	go func() {
 		defer wg.Done()
-		io.Copy(conn, stream)
-		conn.(*net.TCPConn).CloseWrite()
+		io.Copy(targetConn, conn)
 	}()
 
 	wg.Wait()
