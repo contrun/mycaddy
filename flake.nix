@@ -48,8 +48,8 @@
             pname = "caddy";
             version = "latest";
             goPackagePath = "github.com/contrun/mycaddy/cmd/caddy";
-            src = ./.;
-            modules = ./gomod2nix.toml;
+            src = ./cmd/caddy;
+            modules = ./cmd/caddy/gomod2nix.toml;
             nativeBuildInputs = [ musl ];
 
             CGO_ENABLED = 0;

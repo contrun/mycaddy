@@ -1,4 +1,4 @@
-module github.com/contrun/mycaddy
+module github.com/contrun/mycaddy/cmd/caddy
 
 go 1.24
 
