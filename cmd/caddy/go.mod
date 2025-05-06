@@ -5,13 +5,11 @@ go 1.24
 toolchain go1.24.2
 
 require (
-	github.com/abiosoft/caddy-json-schema v0.0.0-20220621031927-c4d6e132f3af
 	github.com/caddy-dns/cloudflare v0.1.0
 	github.com/caddyserver/caddy/v2 v2.9.1
 	github.com/caddyserver/replace-response v0.0.0-20241211194404-3865845790a7
 	github.com/greenpau/caddy-security v1.1.31
 	github.com/mholt/caddy-l4 v0.0.0-20250124234235-87e3e5e2c7f9
-	github.com/mholt/dhall-adapter v0.0.0-20220715002937-fcdaaf4e06d9
 	github.com/mohammed90/caddy-storage-loader v1.0.0
 	github.com/techknowlogick/certmagic-s3 v1.3.0
 )
@@ -48,7 +46,6 @@ require (
 	github.com/emersion/go-sasl v0.0.0-20241020182733-b788ff22d5a6 // indirect
 	github.com/emersion/go-smtp v0.21.3 // indirect
 	github.com/francoispqt/gojay v1.2.13 // indirect
-	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-asn1-ber/asn1-ber v1.5.7 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.4 // indirect
@@ -92,7 +89,6 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/onsi/ginkgo/v2 v2.23.3 // indirect
-	github.com/philandstuff/dhall-golang/v6 v6.0.2 // indirect
 	github.com/pires/go-proxyproto v0.7.1-0.20240628150027-b718e7ce4964 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.21.1 // indirect
@@ -122,7 +118,6 @@ require (
 	github.com/tailscale/tscert v0.0.0-20240608151842-d3f834017e53 // indirect
 	github.com/things-go/go-socks5 v0.0.5 // indirect
 	github.com/urfave/cli v1.22.16 // indirect
-	github.com/x448/float16 v0.8.4 // indirect
 	github.com/zeebo/blake3 v0.2.4 // indirect
 	go.etcd.io/bbolt v1.4.0 // indirect
 	go.step.sm/crypto v0.59.2 // indirect
