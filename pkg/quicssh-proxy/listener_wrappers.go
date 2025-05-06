@@ -1,5 +1,5 @@
-// Package quicsshproxy provides listener wrappers for QUIC and WebSocket connections
-package quicsshproxy
+// Package quicssh_proxy provides listener wrappers for QUIC and WebSocket connections
+package quicssh_proxy
 
 import (
 	"context"
@@ -124,7 +124,7 @@ func (w *WebSocketConnWrapper) GetTarget() string {
 
 // QUICListenerWrapper wraps a QUIC listener
 type QUICListenerWrapper struct {
-	listener quic.Listener
+	listener *quic.Listener
 	logger   *zap.Logger
 }
 

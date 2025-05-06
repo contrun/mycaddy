@@ -1,5 +1,5 @@
-// Package quicsshproxy provides listener wrappers for QUIC and WebSocket connections
-package quicsshproxy
+// Package quicssh_proxy implements HTTP handlers for QUIC-SSH proxy
+package quicssh_proxy
 
 import (
 	"crypto/tls"

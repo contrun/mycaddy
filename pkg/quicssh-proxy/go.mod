@@ -9,6 +9,7 @@ require (
 	github.com/coder/websocket v1.8.13
 	github.com/quic-go/quic-go v0.51.0
 	go.uber.org/zap v1.27.0
+	golang.org/x/crypto v0.37.0
 )
 
 require (
@@ -100,7 +101,6 @@ require (
 	go.uber.org/mock v0.5.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap/exp v0.3.0 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20250418111936-9c1aa6af88df // indirect
 	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
 	golang.org/x/mod v0.24.0 // indirect
@@ -119,5 +119,4 @@ require (
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
-	nhooyr.io/websocket v1.8.17 // indirect
 )

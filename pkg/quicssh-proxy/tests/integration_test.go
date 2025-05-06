@@ -108,7 +108,9 @@ func setupTestEnv(t *testing.T) (func(), error) {
 	if caddyPath == "" {
 		// If we can't find Caddy, build it
 		caddyPath = filepath.Join(testRootDir, "caddy")
-		cmd := exec.Command("go", "build", "-o", caddyPath, "../../../cmd/caddy")
+		
+		// Build Caddy using our test-specific main.go file in the cmd directory
+		cmd := exec.Command("go", "build", "-o", caddyPath, "./cmd")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {

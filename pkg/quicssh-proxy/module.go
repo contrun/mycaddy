@@ -1,5 +1,5 @@
-// Package quicsshproxy provides a Caddy module for forwarding traffic to SSH servers over QUIC
-package quicsshproxy
+// Package quicssh_proxy provides a Caddy module for forwarding traffic to SSH servers over QUIC
+package quicssh_proxy
 
 import (
 	"fmt"

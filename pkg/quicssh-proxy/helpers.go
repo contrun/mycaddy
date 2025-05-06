@@ -1,4 +1,5 @@
-package quicsshproxy
+// Package quicssh_proxy provides helper functions for the QUIC SSH proxy
+package quicssh_proxy
 
 import (
 	"context"
