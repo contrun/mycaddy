@@ -10,6 +10,7 @@ import (
 	_ "github.com/greenpau/caddy-security"
 	_ "github.com/mholt/caddy-l4"
 	_ "github.com/mohammed90/caddy-storage-loader"
+	_ "github.com/tailscale/caddy-tailscale"
 	_ "github.com/techknowlogick/certmagic-s3"
 )
 
