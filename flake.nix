@@ -6,29 +6,39 @@
     gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, gomod2nix, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      gomod2nix,
+      ...
+    }:
     with flake-utils.lib;
     eachSystem defaultSystems (system: rec {
-      config = {
-        android_sdk.accept_license = true;
-        allowUnfree = true;
-      };
-      pkgsOriginal = import nixpkgs { inherit system config; };
+      pkgsOriginal = import nixpkgs { inherit system; };
       pkgsWithOverlays = import nixpkgs {
-        inherit system config;
+        inherit system;
         overlays = [ (import "${gomod2nix}/overlay.nix") ];
       };
 
       devShells = {
-        ci = with pkgsWithOverlays;
+        ci =
+          with pkgsWithOverlays;
           mkShell {
-            buildInputs = [ go gomod2nix.packages.${system}.default ];
+            buildInputs = [
+              go
+              gomod2nix.packages.${system}.default
+            ];
             CGO_ENABLED = 0;
-            ldflags = [ "-extldflags '-static -L${musl}/lib'" ];
           };
-        default = with pkgsWithOverlays;
+        default =
+          with pkgsWithOverlays;
           mkShell {
-            buildInputs = [ go gomod2nix.packages.${system}.default ];
+            buildInputs = [
+              go
+              gomod2nix.packages.${system}.default
+            ];
           };
       };
 
@@ -43,17 +53,15 @@
 
       packages = rec {
         default = caddy;
-        caddy = with pkgsWithOverlays;
+        caddy =
+          with pkgsWithOverlays;
           buildGoApplication {
             pname = "caddy";
             version = "latest";
             goPackagePath = "github.com/contrun/mycaddy/cmd/caddy";
             src = ./cmd/caddy;
             modules = ./cmd/caddy/gomod2nix.toml;
-            nativeBuildInputs = [ musl ];
-
             CGO_ENABLED = 0;
-            ldflags = [ "-extldflags '-static -L${musl}/lib'" ];
           };
       };
       defaultPackage = packages.default;
