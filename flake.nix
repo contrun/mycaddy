@@ -62,6 +62,9 @@
             src = ./cmd/caddy;
             modules = ./cmd/caddy/gomod2nix.toml;
             CGO_ENABLED = 0;
+            meta = {
+              mainProgram = "caddy";
+            };
           };
       };
       defaultPackage = packages.default;
