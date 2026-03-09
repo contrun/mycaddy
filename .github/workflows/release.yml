@@ -38,6 +38,8 @@ jobs:
       if: matrix.goos == 'linux'
 
     - uses: actions/setup-go@v6
+      with:
+        go-version-file: 'go.work'
       if: matrix.goos != 'linux'
       
     - name: Build
