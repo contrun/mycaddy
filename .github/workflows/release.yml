@@ -37,7 +37,7 @@ jobs:
         install-nix: "false"
       if: matrix.goos == 'linux'
 
-    - uses: actions/setup-go@v5
+    - uses: actions/setup-go@v6
       if: matrix.goos != 'linux'
       
     - name: Build
