@@ -15,8 +15,8 @@ permissions:
     packages: write
 
 jobs:
-  releases-matrix:
-    name: Release Go Binary
+  nix-build:
+    name: Build with nix
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -30,17 +30,32 @@ jobs:
       with:
         nix_path: nixpkgs=channel:nixos-unstable
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      if: matrix.goos == 'linux'
 
     - uses: JRMurr/direnv-nix-action@v4.2.0
       with:
         install-nix: "false"
-      if: matrix.goos == 'linux'
+
+    - name: Build
+      run: |
+        export GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }}
+        BINARY_NAME="caddy-${{ matrix.goos }}-${{ matrix.goarch }}"
+        export ldflags="${ldflags:--s -w}"
+        go build -v -o "$BINARY_NAME" ./cmd/caddy
+
+  release:
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        goos: [linux, windows, darwin]
+        goarch: [amd64, arm64]
+    steps:
+    - uses: actions/checkout@v6
 
     - uses: actions/setup-go@v6
       with:
         go-version-file: 'go.work'
-      if: matrix.goos != 'linux'
       
     - name: Build
       run: |
