@@ -32,7 +32,7 @@ jobs:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
       if: matrix.goos == 'linux'
 
-    - uses: JRMurr/direnv-nix-action@v4.1.0
+    - uses: JRMurr/direnv-nix-action@v4.2.0
       with:
         install-nix: "false"
       if: matrix.goos == 'linux'
