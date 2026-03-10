@@ -3,6 +3,10 @@ package main
 import (
 	caddycmd "github.com/caddyserver/caddy/v2/cmd"
 
+	// Caddy also has this to embed time zone data to the resulting binary.
+	// See https://github.com/caddyserver/caddy/pull/7432
+	_ "time/tzdata"
+
 	_ "github.com/caddyserver/caddy/v2/modules/standard"
 
 	_ "github.com/caddy-dns/cloudflare"
