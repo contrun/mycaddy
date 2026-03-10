@@ -11,6 +11,11 @@ require (
 	github.com/mohammed90/caddy-storage-loader v1.0.0
 	github.com/tailscale/caddy-tailscale v0.0.0-20260106222316-bb080c4414ac
 	github.com/techknowlogick/certmagic-s3 v1.4.1
+	github.com/mohammed90/caddy-storage-loader v0.0.0
+)
+
+replace (
+	github.com/mohammed90/caddy-storage-loader => ../../pkg/storage-loader
 )
 
 require (
