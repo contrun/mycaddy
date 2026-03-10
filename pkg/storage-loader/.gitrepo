@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/mohammed90/caddy-storage-loader.git
+	branch = main
+	commit = 5efd1293f7d75b8d7f6c589d87d8bc3f1536a878
+	parent = e1d95a7e3605a8c2be7e3839647d75c07ea4609c
+	method = merge
+	cmdver = 0.4.9
