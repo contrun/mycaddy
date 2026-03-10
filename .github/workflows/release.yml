@@ -35,6 +35,7 @@ jobs:
       run: |
         export GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }}
         BINARY_NAME="caddy-${{ matrix.goos }}-${{ matrix.goarch }}"
+        export ldflags="-X github.com/caddyserver/caddy/v2.CustomVersion=${{ github.ref_type == 'tag' && github.ref_name || github.sha }}"
         if [[ ${{ matrix.goos }} == "linux" ]] && [[ ${{ matrix.goarch }} == "amd64" ]] ; then
           go build -v -o "$BINARY_NAME.fat" ./cmd/caddy
           objcopy --only-keep-debug "$BINARY_NAME.fat" "$BINARY_NAME.debug"
