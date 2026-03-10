@@ -35,14 +35,14 @@ jobs:
       run: |
         export GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }}
         BINARY_NAME="caddy-${{ matrix.goos }}-${{ matrix.goarch }}"
-        export ldflags="-X github.com/caddyserver/caddy/v2.CustomVersion=${{ github.ref_type == 'tag' && github.ref_name || github.sha }}"
-        if [[ ${{ matrix.goos }} == "linux" ]] && [[ ${{ matrix.goarch }} == "amd64" ]] ; then
-          go build -v -o "$BINARY_NAME.fat" ./cmd/caddy
+        ldflags="-X github.com/caddyserver/caddy/v2.CustomVersion=${{ github.ref_type == 'tag' && github.ref_name || github.sha }}"
+        if [[ ${{ matrix.goos }} == "linux" ]]; then
+          go build -ldflags="${ldflags}" -v -o "$BINARY_NAME.fat" ./cmd/caddy
           objcopy --only-keep-debug "$BINARY_NAME.fat" "$BINARY_NAME.debug"
           objcopy --strip-debug --add-gnu-debuglink="$BINARY_NAME.debug" "$BINARY_NAME.fat" "$BINARY_NAME"
         else
-          export ldflags="${ldflags:--s -w}"
-          go build -v -o "$BINARY_NAME" ./cmd/caddy
+          ldflags="${ldflags}${ldflags:+ }-s -w"
+          go build -ldflags="${ldflags}" -v -o "$BINARY_NAME" ./cmd/caddy
         fi
 
     - name: Release
