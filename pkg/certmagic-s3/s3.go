@@ -75,6 +75,11 @@ func (s3 *S3) Provision(ctx caddy.Context) error {
 }
 
 func (s3 *S3) buildS3Client() (*s3sdk.Client, error) {
+	repl := caddy.NewReplacer()
+	replace := func(s string) string {
+		return repl.ReplaceKnown(s, "")
+	}
+
 	configOptions := []func(*config.LoadOptions) error{
 		config.WithRegion(s3.Region),
 	}
@@ -99,9 +104,9 @@ func (s3 *S3) buildS3Client() (*s3sdk.Client, error) {
 
 	if s3.AccessKey != "" && s3.SecretKey != "" {
 		configOptions = append(configOptions, config.WithCredentialsProvider(
-			credentials.NewStaticCredentialsProvider(s3.AccessKey, s3.SecretKey, "")))
+			credentials.NewStaticCredentialsProvider(replace(s3.AccessKey), replace(s3.SecretKey), "")))
 	} else if s3.Profile != "" {
-		configOptions = append(configOptions, config.WithSharedConfigProfile(s3.Profile))
+		configOptions = append(configOptions, config.WithSharedConfigProfile(replace(s3.Profile)))
 	}
 
 	cfg, err := config.LoadDefaultConfig(context.Background(), configOptions...)
@@ -111,7 +116,7 @@ func (s3 *S3) buildS3Client() (*s3sdk.Client, error) {
 
 	if s3.RoleARN != "" {
 		stsClient := sts.NewFromConfig(cfg)
-		provider := stscreds.NewAssumeRoleProvider(stsClient, s3.RoleARN)
+		provider := stscreds.NewAssumeRoleProvider(stsClient, replace(s3.RoleARN))
 		cfg.Credentials = aws.NewCredentialsCache(provider)
 	}
 
@@ -119,7 +124,7 @@ func (s3 *S3) buildS3Client() (*s3sdk.Client, error) {
 
 	if s3.Endpoint != "" {
 		s3Options = append(s3Options, func(o *s3sdk.Options) {
-			o.BaseEndpoint = aws.String(s3.Endpoint)
+			o.BaseEndpoint = aws.String(replace(s3.Endpoint))
 		})
 	}
 
@@ -438,7 +443,7 @@ func (s3 *S3) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 		var value string
 
 		if !d.Args(&value) {
-			continue;
+			continue
 		}
 
 		switch key {
