@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/techknowlogick/certmagic-s3.git
+	branch = main
+	commit = bdb2b37b60bb187af0444e62c0e278a24ab655dd
+	parent = f58146eaa87d89b6ac21670e63c2ff58d88b310c
+	method = merge
+	cmdver = 0.4.9
