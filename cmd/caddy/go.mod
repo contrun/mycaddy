@@ -12,6 +12,8 @@ require (
 	github.com/techknowlogick/certmagic-s3 v1.4.1
 )
 
+replace github.com/techknowlogick/certmagic-s3 => ../../pkg/certmagic-s3
+
 require (
 	cel.dev/expr v0.25.1 // indirect
 	cloud.google.com/go/auth v0.18.1 // indirect
