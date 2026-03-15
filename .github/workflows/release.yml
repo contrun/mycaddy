@@ -46,7 +46,7 @@ jobs:
         fi
 
     - name: Release
-      uses: softprops/action-gh-release@v2.4.2
+      uses: softprops/action-gh-release@v2.5.3
       with:
         # If we are releasing an updates then set release_tag to be null,
         # otherwise if the branch name is "main" then set the release_tag to be "latest",
